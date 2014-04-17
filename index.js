@@ -55,7 +55,7 @@ var uniq = function(arr) {
 };
 
 
-var buildMixin = function() {
+var createMixinClass = function() {
 
     var Mixin = function() {
         if (!(this instanceof Mixin)) {
@@ -117,7 +117,7 @@ Abstract.mix = function() {
 };
 
 Abstract.extend = function() {    
-    return this.mix.apply(buildMixin(), [this].concat(slice.call(arguments)));
+    return this.mix.apply(createMixinClass(), [this].concat(slice.call(arguments)));
 };
 
 module.exports = function() {
