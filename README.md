@@ -4,6 +4,8 @@ mixin style inherit
 
 
 ```javascript
+'use strict';
+
 var mixin = require('../index');
 var assert = require('assert');
 

@@ -1,9 +1,14 @@
+// ecmascript5 is required
+
+'use strict';
+
+
 var slice = [].slice;
 
 var CTORS = '__ctors';
 
-var setCtors = function(o, optFns) {
-    o[CTORS] = optFns;
+var setCtors = function(o, ctors) {
+    o[CTORS] = ctors;
 };
 
 var getCtors = function(o) {
@@ -75,7 +80,6 @@ var createMixinClass = function() {
 
 var Abstract = function() {};
 
-// 避免把Abstract本身作为构造函数
 setCtors(Abstract, []);
 
 Abstract.mix = function() {
