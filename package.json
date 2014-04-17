@@ -1,0 +1,23 @@
+{
+  "name": "mixin-class",
+  "version": "1.0.0",
+  "description": "mixin style inherit",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/youngjay/mixin-class.git"
+  },
+  "keywords": [
+    "mixin",
+    "inherit"
+  ],
+  "author": "hiyoungjay@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/youngjay/mixin-class/issues"
+  },
+  "homepage": "https://github.com/youngjay/mixin-class"
+}

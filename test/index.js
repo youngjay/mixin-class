@@ -1,9 +1,3 @@
-mixin-class
-===========
-
-mixin style inherit
-
-```javascript
 var mixin = require('../index');
 var assert = require('assert');
 
@@ -132,5 +126,3 @@ describe('mixin().extend(opt0 ... optN)', function() {
         assert.equal(o.b, undefined);
     })
 })
-
-```
