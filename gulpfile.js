@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var fs = require('fs');
+var concat = require('gulp-concat');
 var Transform = require('stream').Transform
 
 var through = function(transform, flush) {
@@ -11,23 +12,10 @@ var through = function(transform, flush) {
     return t
 };
 
-// stop exit
-gulp.on('stop', function() {
-    process.exit(1)
-});
-
 gulp.task('readme', function() {
-    var INTRO = ['mixin-class', '===========', 'mixin style inherit', '```javascript', ''].join('\n');
-    var OUTRO = ['', '```'].join('\n');
-
-    gulp.src('test/index.js')
-        .pipe(through(function(file, enc, cb) {  
-            this.push(INTRO);
-            this.push(file.contents);
-            this.push(OUTRO);
-            cb()
-        }))
-        .pipe(fs.createWriteStream('README.md'))
+    gulp.src(['intro.md', 'test/index.js', 'outro.md'])
+        .pipe(concat('README.md'))
+        .pipe(gulp.dest('.'))
 })
 
 gulp.task('default', ['readme']);
