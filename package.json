@@ -1,6 +1,7 @@
 {
   "name": "mixin-class",
   "version": "1.0.0",
+  "engines" : { "node" : ">=0.10" },
   "description": "mixin style inherit",
   "main": "index.js",
   "scripts": {
@@ -19,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/youngjay/mixin-class/issues"
   },
-  "homepage": "https://github.com/youngjay/mixin-class"
+  "homepage": "https://github.com/youngjay/mixin-class",
+  "devDependencies": {
+    "gulp": "^3.6.1"
+  }
 }

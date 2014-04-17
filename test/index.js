@@ -8,7 +8,7 @@ describe('mixin(opt0 ... optN) return a class', function() {
         assert(a instanceof Class);
     });
 
-    it('call directly equal called with new', function() {
+    it('call directly equals called with new', function() {
         var Class = mixin();
         var a = Class();
         assert(a instanceof Class);
