@@ -63,10 +63,6 @@ var uniq = function(arr) {
 var createMixinClass = function() {
 
     var Mixin = function() {
-        if (!(this instanceof Mixin)) {
-            return create(Mixin, arguments);
-        }
-
         var self = this, args = arguments;
         getCtors(Mixin).forEach(function(init) {
             init.apply(self, args);
@@ -122,6 +118,17 @@ Abstract.mix = function() {
 
 Abstract.extend = function() {    
     return this.mix.apply(createMixinClass(), [this].concat(slice.call(arguments)));
+};
+
+Abstract.prototype.mix = function() {
+    var Class = Abstract.extend.apply(Abstract, arguments);
+    mix(this, Class.prototype);
+    Class.call(this);
+    return this;
+};
+
+Abstract.prototype.extend = function() {
+    return this.mix.apply({}, [this].concat(slice.call(arguments)));
 };
 
 module.exports = function() {

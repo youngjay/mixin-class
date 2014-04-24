@@ -10,11 +10,11 @@ describe('mixin(opt0 ... optN) return a class', function() {
         assert(a instanceof Class);
     });
 
-    it('mixin()返回的构造函数可以省略new来调用', function() {
-        var Class = mixin();
-        var a = Class();
-        assert(a instanceof Class);
-    });
+    // it('mixin()返回的构造函数可以省略new来调用', function() {
+    //     var Class = mixin();
+    //     var a = new Class();
+    //     assert(a instanceof Class);
+    // });
 
     it('mixin(opt0...optN)可以接受object作为参数，这些object的属性会被添加到返回的类prototype', function() {
         var Class = mixin(
@@ -26,7 +26,7 @@ describe('mixin(opt0 ... optN) return a class', function() {
                 }
             );
 
-        var o = Class();
+        var o = new Class();
         assert.equal(o.a, 1);
         assert.equal(o.b, 2);
     });
@@ -41,7 +41,7 @@ describe('mixin(opt0 ... optN) return a class', function() {
                 }
             );
 
-        var o = Class();
+        var o = new Class();
         assert.equal(o.a, 1);
         assert.equal(o.b, 2);
     });
@@ -55,7 +55,7 @@ describe('mixin(opt0 ... optN) return a class', function() {
 
         var Class = mixin(C);
 
-        var o = Class();
+        var o = new Class();
         assert.equal(o.a, 1);
         assert.equal(o.b, 2);
     });
@@ -67,7 +67,7 @@ describe('mixin(opt0 ... optN) return a class', function() {
             this.b = b;
         })
 
-        var o = Class(1, 2);
+        var o = new  Class(1, 2);
         assert.equal(o.a, 1);
         assert.equal(o.b, 2);
     })
@@ -78,7 +78,7 @@ describe('mixin(opt0 ... optN) return a class', function() {
             calledTimes++;
         };
         var Class = mixin(Ctor, Ctor, mixin(Ctor));
-        var a = Class();
+        var a = new Class();
         assert.equal(calledTimes, 1)
     })
 })
@@ -94,7 +94,7 @@ describe('mixin().mix(opt0 ... optN)', function() {
 
         assert.equal(Class, ClassMixReturn)
 
-        var o = Class();
+        var o = new Class();
         assert.equal(o.a, 1);
         assert.equal(o.b, 2);
     });
@@ -109,7 +109,7 @@ describe('mixin().extend(opt0 ... optN)', function() {
             b: 2
         })
 
-        var o = ClassMixReturn();
+        var o = new ClassMixReturn();
         assert.equal(o.a, 1);
         assert.equal(o.b, 2);
     })
@@ -123,8 +123,72 @@ describe('mixin().extend(opt0 ... optN)', function() {
         })
         assert.notEqual(Class, ClassMixReturn)
 
-        var o = Class();
+        var o = new Class();
         assert.equal(o.a, undefined);
         assert.equal(o.b, undefined);
     })
+})
+
+describe('mixin()().mix(opt0 ... optN)', function() {
+    it('should mix object', function() {
+        var Class = mixin();
+        var o = new Class();
+        o.mix({
+            a: 1
+        });
+
+        assert.equal(o.a, 1)
+    })
+
+    it('should mix Class', function() {
+        var Class = mixin();
+        var o = new Class();
+        var Class2 = mixin(function() {
+            this.a = 1
+        }, {
+            b: 2
+        })
+        o.mix(Class2);
+
+        assert.equal(o.a, 1)
+        assert.equal(o.b, 2)
+    })
+})
+
+describe('mixin()().extend(opt0 ... optN)', function() {
+    it('should extend object', function() {
+        var Class = mixin();
+        var o = new Class();
+        var o1 = o.extend({
+            a: 1
+        });
+
+        assert.equal(o1.a, 1)
+    })
+
+    it('但是不会改变自身', function() {
+        var Class = mixin();
+        var o = new Class();
+        var o1 = o.extend({
+            a: 1
+        });
+
+
+        assert.notEqual(o, o1);
+        assert.equal(o.a, undefined);
+    })
+
+    // it('should mix Class', function() {
+    //     var Class = mixin();
+    //     var o = new Class();
+    //     var Class2 = mixin(function() {
+    //         this.a = 1
+    //     }, {
+    //         b: 2
+    //     })
+    //     o.mix(Class2);
+
+    //     assert.equal(o.a, 1)
+    //     assert.equal(o.b, 2)
+    // })
 })
