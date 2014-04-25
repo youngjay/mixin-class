@@ -10,11 +10,11 @@ describe('mixin(opt0 ... optN) return a class', function() {
         assert(a instanceof Class);
     });
 
-    // it('mixin()返回的构造函数可以省略new来调用', function() {
-    //     var Class = mixin();
-    //     var a = new Class();
-    //     assert(a instanceof Class);
-    // });
+    it('mixin()返回的构造函数通过create来调用', function() {
+        var Class = mixin();
+        var a = Class.create();
+        assert(a instanceof Class);
+    });
 
     it('mixin(opt0...optN)可以接受object作为参数，这些object的属性会被添加到返回的类prototype', function() {
         var Class = mixin(

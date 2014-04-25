@@ -120,6 +120,10 @@ Abstract.extend = function() {
     return this.mix.apply(createMixinClass(), [this].concat(slice.call(arguments)));
 };
 
+Abstract.create = function() {
+    return create(this, arguments);
+};
+
 Abstract.prototype.mix = function() {
     var Class = Abstract.extend.apply(Abstract, arguments);
     mix(this, Class.prototype);
