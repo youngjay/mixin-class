@@ -1,10 +1,4 @@
-// ecmascript5 is required
-
-'use strict';
-
-
 var slice = [].slice;
-
 var CTORS = '__ctors';
 
 var setCtors = function(o, ctors) {
@@ -64,9 +58,11 @@ var createMixinClass = function() {
 
     var Mixin = function() {
         var self = this, args = arguments;
+        var instance;
         getCtors(Mixin).forEach(function(init) {
-            init.apply(self, args);
+            instance = init.apply(self, args) || instance;
         });
+        return instance;
     };
 
     setCtors(Mixin, []);
