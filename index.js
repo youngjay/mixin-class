@@ -57,12 +57,10 @@ var uniq = function(arr) {
 var createMixinClass = function() {
 
     var Mixin = function() {
-        var self = this, args = arguments;
-        var instance;
-        getCtors(Mixin).forEach(function(init) {
-            instance = init.apply(self, args) || instance;
-        });
-        return instance;
+        var args = arguments;
+        return getCtors(Mixin).reduce(function(instance, init) {
+            return init.apply(instance, args) || instance;
+        }, this);
     };
 
     setCtors(Mixin, []);

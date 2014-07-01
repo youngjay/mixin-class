@@ -177,18 +177,34 @@ describe('mixin()().extend(opt0 ... optN)', function() {
         assert.notEqual(o, o1);
         assert.equal(o.a, undefined);
     })
-
-    // it('should mix Class', function() {
-    //     var Class = mixin();
-    //     var o = new Class();
-    //     var Class2 = mixin(function() {
-    //         this.a = 1
-    //     }, {
-    //         b: 2
-    //     })
-    //     o.mix(Class2);
-
-    //     assert.equal(o.a, 1)
-    //     assert.equal(o.b, 2)
-    // })
 })
+
+describe('mixin ctor', function() {
+    it('每个构造函数的返回值会作为下一个构造函数的this', function() {
+        var a = {};
+        var b = {};
+        var c = {};
+
+
+        var A = function() {
+            return a;
+        };
+
+        var B = function() {
+            assert.equal(this, a);
+            return b;
+        };
+
+        var C = function() {
+            assert.equal(this, b);
+            return c;
+        }
+
+        var o = new (mixin(A, B, C))();
+
+
+        assert.equal(o, c)
+
+    })
+
+});
