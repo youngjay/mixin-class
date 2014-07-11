@@ -17,23 +17,6 @@ var mix = function(dest, src) {
     return dest;
 };
 
-var create = function(Ctor, args) {
-    switch (args.length) {
-        case 0:
-            return new Ctor();            
-        case 1:
-            return new Ctor(args[0]);
-        case 2:
-            return new Ctor(args[0], args[1]);
-        case 3:
-            return new Ctor(args[0], args[1], args[2]);
-        default:
-            var instance = Object.create(Ctor.prototype);
-            Ctor.apply(instance, args);
-            return instance;
-    }
-};
-
 var flatten = function(o) {
     if (Array.isArray(o)) {
         return o.map(flatten).reduce(function(results, arr) {
@@ -114,23 +97,6 @@ Abstract.extend = function() {
     return this.mix.apply(createMixinClass(), [this].concat(slice.call(arguments)));
 };
 
-Abstract.create = function() {
-    return create(this, arguments);
-};
-
-Abstract.prototype.mix = function() {
-    var Class = Abstract.extend.apply(Abstract, arguments);
-    mix(this, Class.prototype);
-    Class.call(this);
-    return this;
-};
-
-Abstract.prototype.extend = function() {
-    return this.mix.apply({}, [this].concat(slice.call(arguments)));
-};
-
-module.exports = function() {
-    return Abstract.extend(slice.call(arguments));
-};
+module.exports = Abstract.extend.bind(Abstract);
 
 module.exports.extend = module.exports;
