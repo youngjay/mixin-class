@@ -31,6 +31,21 @@ describe('mixin(opt0 ... optN) return a class', function() {
         assert.equal(o.b, 2);
     });
 
+    it('mixin() === mixin.extend()', function() {
+        var Class = mixin.extend(
+                {
+                    a: 1
+                }, 
+                {
+                    b: 2
+                }
+            );
+
+        var o = new Class();
+        assert.equal(o.a, 1);
+        assert.equal(o.b, 2);
+    })
+
     it('mixin(opt0...optN)可以接受function作为参数，这些function会在new的时候依次被调用', function() {
         var Class = mixin(
                 function() {
