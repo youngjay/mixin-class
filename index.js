@@ -132,3 +132,5 @@ Abstract.prototype.extend = function() {
 module.exports = function() {
     return Abstract.extend(slice.call(arguments));
 };
+
+module.exports.extend = module.exports;
