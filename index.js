@@ -1,3 +1,5 @@
+'use strict';
+
 var slice = [].slice;
 var CTORS = '__ctors';
 
@@ -35,7 +37,6 @@ var uniq = function(arr) {
         return results;
     }, []);
 };
-
 
 var createMixinClass = function() {
 

@@ -13,7 +13,7 @@ var through = function(transform, flush) {
 };
 
 gulp.task('readme', function() {
-    gulp.src(['intro.md', 'test/index.js', 'outro.md'])
+    gulp.src(['intro.md', 'test/mixin-class.js', 'outro.md'])
         .pipe(concat('README.md'))
         .pipe(gulp.dest('.'))
 })
