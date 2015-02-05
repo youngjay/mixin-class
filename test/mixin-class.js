@@ -11,7 +11,7 @@ describe('mixin(opt0 ... optN) return a class', function() {
     });
 
     it('mixin.extend()也会返回一个构造函数', function() {
-        var Class = mixin();
+        var Class = mixin.extend();
         var a = new Class()
         assert(a instanceof Class);
     });
