@@ -38,31 +38,18 @@ var uniq = function(arr) {
     }, []);
 };
 
-var createMixinClass = function() {
-
-    var Mixin = function() {
-        var args = arguments;
-        return getCtors(Mixin).reduce(function(instance, init) {
-            return init.apply(instance, args) || instance;
-        }, this);
-    };
-
-    setCtors(Mixin, []);
-
-    return Mixin;
+var mergeObjectFromArray = function(arr) {
+    return arr.reduce(function(all, o) {
+        return mix(all, o);
+    }, {});
 };
 
-var Abstract = function() {};
+var getMixinConfig = function(args) {
+    var staticProperties = [];
+    var instanceProperties = [];
+    var constructors = [];
 
-setCtors(Abstract, []);
-
-Abstract.mix = function() {
-    var self = this;
-    var proto = this.prototype;
-
-    var ctors = getCtors(this);
-
-    flatten(slice.call(arguments)).forEach(function(o) {
+    args.forEach(function(o) {
         if (!o) {
             return;
         }
@@ -72,32 +59,63 @@ Abstract.mix = function() {
             var srcCtors = getCtors(o);
 
             if (srcCtors) {
-                ctors.push.apply(ctors, srcCtors);
+                constructors = constructors.concat(srcCtors);
             } else {
-                ctors.push(o);
+                constructors.push(o);
             }
 
-            mix(proto, srcProto);
-            mix(self, o);
+            instanceProperties.push(srcProto);
+            staticProperties.push(o);
             return;
         }
 
         if (typeof o === 'object') {
-            mix(proto, o);
+            instanceProperties.push(o);
             return;
         }                    
     });
 
-    setCtors(this, uniq(ctors));
-    proto.constructor = this;
-
-    return this;
+    return {
+        constructors: uniq(constructors),
+        staticProperties: mergeObjectFromArray(staticProperties),
+        instanceProperties: mergeObjectFromArray(instanceProperties)
+    }
 };
 
-Abstract.extend = function() {    
-    return this.mix.apply(createMixinClass(), [this].concat(slice.call(arguments)));
+var fnString = (function() {
+    var args = arguments;
+    return getCtors(this.constructor).reduce(function(instance, init) {
+        return init.apply(instance, args) || instance;
+    }, this);
+}).toString().replace(/function\s*\(\)/, '');
+
+var mixin = function() {
+    var config = getMixinConfig(flatten(slice.call(arguments)));
+
+    var constructorNames = config.constructors.reduce(function(names, fn) {
+        if (fn.name) {
+            names.push(fn.name)
+        }
+        return names;
+    }, []).join('__');
+
+    var Class;
+
+    eval('Class = function ' + constructorNames + '()' + fnString);
+
+    setCtors(Class, config.constructors)
+
+    mix(Class, config.staticProperties);
+    mix(Class.prototype, config.instanceProperties);
+
+    return Class
 };
 
-module.exports = Abstract.extend.bind(Abstract);
+var Mixin = function Mixin() {};
 
+Mixin.extend = function() {
+    return mixin(this, slice.call(arguments));
+};
+
+module.exports = Mixin.extend.bind(Mixin);
 module.exports.extend = module.exports;

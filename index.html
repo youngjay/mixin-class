@@ -1,23 +1,16 @@
-<!DOCTYPE html>
-<head>
-<meta charset="UTF-8">
-
-<script src="./neurons/neuron/latest/neuron.js"></script>
+<script src="dist/mixin.js"></script>
 <script>
-  neuron.config({
-    path: './neurons'
-  });
+    var A = mixin(
+        function Add() {
+            this.a = 1
+        },
+        function Add2() {
+            this.a = 1
+        },
+        function () {
+            this.a = 1
+        }
+    ).extend(function bbb(){})
+
+    console.log(A, new A)
 </script>
-</head>
-
-<body>
-<script>
-
-facade({
-  mod: 'mixin-class'
-});
-
-</script>
-</body>
-
-</html>

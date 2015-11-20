@@ -1,6 +1,6 @@
 {
   "name": "mixin-class",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "mixin style inherit",
   "main": "index.js",
   "scripts": {
