@@ -4,7 +4,9 @@ var slice = [].slice;
 var CTORS = '__ctors';
 
 var setCtors = function(o, ctors) {
-    o[CTORS] = ctors;
+    Object.defineProperty(o, CTORS, {
+        value: ctors
+    });
 };
 
 var getCtors = function(o) {
@@ -82,40 +84,31 @@ var getMixinConfig = function(args) {
     }
 };
 
-var fnString = (function() {
+var CONSTRUCTOR_CONTENT = (function() {
     var args = arguments;
     return getCtors(this.constructor).reduce(function(instance, init) {
         return init.apply(instance, args) || instance;
     }, this);
 }).toString().replace(/function\s*\(\)/, '');
 
-var mixin = function() {
-    var config = getMixinConfig(flatten(slice.call(arguments)));
-
-    var constructorNames = config.constructors.reduce(function(names, fn) {
+var generateConstructor = function(ctors) {
+    var constructorNames = ctors.reduce(function(names, fn) {
         if (fn.name) {
             names.push(fn.name)
         }
         return names;
     }, []).join('__');
 
-    var Class;
+    var Class;    
+    eval('Class = function ' + constructorNames + '()' + CONSTRUCTOR_CONTENT);
+    setCtors(Class, ctors);
+    return Class;
+};
 
-    eval('Class = function ' + constructorNames + '()' + fnString);
-
-    setCtors(Class, config.constructors)
-
+module.exports = function() {
+    var config = getMixinConfig(flatten(slice.call(arguments)));
+    var Class = generateConstructor(config.constructors);
     mix(Class, config.staticProperties);
     mix(Class.prototype, config.instanceProperties);
-
-    return Class
+    return Class;
 };
-
-var Mixin = function Mixin() {};
-
-Mixin.extend = function() {
-    return mixin(this, slice.call(arguments));
-};
-
-module.exports = Mixin.extend.bind(Mixin);
-module.exports.extend = module.exports;
