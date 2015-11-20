@@ -40,10 +40,11 @@ var uniq = function(arr) {
     }, []);
 };
 
-var mergeObjectFromArray = function(arr) {
-    return arr.reduce(function(all, o) {
-        return mix(all, o);
-    }, {});
+var mergeObjectFromArray = function(dest, arr) {
+    arr.forEach(function(o) {
+        mix(dest, o)
+    })
+    return dest;
 };
 
 var getMixinConfig = function(args) {
@@ -79,8 +80,8 @@ var getMixinConfig = function(args) {
 
     return {
         constructors: uniq(constructors),
-        staticProperties: mergeObjectFromArray(staticProperties),
-        instanceProperties: mergeObjectFromArray(instanceProperties)
+        staticProperties: staticProperties,
+        instanceProperties: instanceProperties
     }
 };
 
@@ -108,7 +109,7 @@ var generateConstructor = function(ctors) {
 module.exports = function() {
     var config = getMixinConfig(flatten(slice.call(arguments)));
     var Class = generateConstructor(config.constructors);
-    mix(Class, config.staticProperties);
-    mix(Class.prototype, config.instanceProperties);
+    mergeObjectFromArray(Class, config.staticProperties);
+    mergeObjectFromArray(Class.prototype, config.instanceProperties);
     return Class;
 };

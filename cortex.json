@@ -1,6 +1,6 @@
 {
   "name": "mixin-class",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "mixin style class system",
   "main": "index.js",
   "repository": "git://github.com/youngjay/mixin-class.git",
