@@ -1,5 +1,3 @@
-'use strict';
-
 var slice = [].slice;
 var CTORS = '__ctors';
 
@@ -21,6 +19,13 @@ var mix = function(dest, src) {
     return dest;
 };
 
+var mergeObjectFromArray = function(dest, arr) {
+    arr.forEach(function(o) {
+        mix(dest, o)
+    })
+    return dest;
+};
+
 var flatten = function(o) {
     if (Array.isArray(o)) {
         return o.map(flatten).reduce(function(results, arr) {
@@ -38,13 +43,6 @@ var uniq = function(arr) {
         }
         return results;
     }, []);
-};
-
-var mergeObjectFromArray = function(dest, arr) {
-    arr.forEach(function(o) {
-        mix(dest, o)
-    })
-    return dest;
 };
 
 var getMixinConfig = function(args) {
