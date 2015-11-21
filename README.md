@@ -16,12 +16,6 @@ describe('mixin(opt0 ... optN) return a class', function() {
         assert(a instanceof Class);
     });
 
-    it('mixin.extend()也会返回一个构造函数', function() {
-        var Class = mixin.extend();
-        var a = new Class()
-        assert(a instanceof Class);
-    });
-
     it('mixin(opt0...optN)可以接受object作为参数，这些object的属性会被添加到返回的类prototype', function() {
         var Class = mixin(
                 {
@@ -96,22 +90,21 @@ describe('mixin ctor', function() {
         var c = {};
 
 
-        var A = function() {
+        var A = function A() {
             return a;
         };
 
-        var B = function() {
+        var B = function B() {
             assert.equal(this, a);
             return b;
         };
 
-        var C = function() {
+        var C = function C () {
             assert.equal(this, b);
             return c;
         }
 
         var o = new (mixin(A, B, C))();
-
 
         assert.equal(o, c)
 

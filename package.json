@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/youngjay/mixin-class",
   "devDependencies": {
-    "gulp": "^3.6.1",
+    "gulp": "^3.9.0",
     "gulp-concat": "^2.2.0"
   }
 }
