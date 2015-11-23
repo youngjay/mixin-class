@@ -18,9 +18,6 @@
     "url": "http://github.com/youngjay/mixin-class/issues"
   },
   "homepage": "http://github.com/youngjay/mixin-class",
-  "engines": {
-    "neuron": "*"
-  },
   "devDependencies": {
     "assert": "*"
   }
