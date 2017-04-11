@@ -2,9 +2,7 @@ var slice = [].slice;
 var CTORS = '__ctors';
 
 var setCtors = function(o, ctors) {
-    Object.defineProperty(o, CTORS, {
-        value: ctors
-    });
+    o[CTORS] = ctors;
 };
 
 var getCtors = function(o) {
