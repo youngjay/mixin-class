@@ -2,7 +2,10 @@ var slice = [].slice;
 var CTORS = '__ctors';
 
 var setCtors = function(o, ctors) {
-    o[CTORS] = ctors;
+    // 这边要用defineProperty， 这样在mix遍历的时候不会把CTORS遍历出来
+    Object.defineProperty(o, CTORS, {
+        value: ctors
+    });
 };
 
 var getCtors = function(o) {
@@ -82,9 +85,10 @@ var getMixinConfig = function(args) {
 };
 
 var generateConstructor = function(ctors) {
+
     var Mixin = function() {
         var args = arguments;
-        return getCtors(Mixin).reduce(function(instance, init) {
+        return getCtors(this.constructor).reduce(function(instance, init) {
             return init.apply(instance, args) || instance;
         }, this);
     };
@@ -92,7 +96,7 @@ var generateConstructor = function(ctors) {
     setCtors(Mixin, ctors);
 
     return Mixin;
-}
+};
 
 module.exports = function() {
     var config = getMixinConfig(flatten(slice.call(arguments)));

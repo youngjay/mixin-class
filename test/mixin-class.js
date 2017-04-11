@@ -40,6 +40,7 @@ describe('mixin(opt0 ... optN) return a class', function() {
         assert.equal(o.b, 2);
     });
 
+
     it('mixin(opt0...optN)可以接受class作为参数，这些class的prototype的属性会被添加到返回的类prototype，这些class的构造函数会在new的时候依次被调用', function() {
         var C = function() {
             this.a = 1;
@@ -102,6 +103,24 @@ describe('mixin ctor', function() {
 
         assert.equal(o, c)
 
+    })
+
+    
+    it('mixin 的构造函数不会相互覆盖', function() {
+        var C1 = mixin(function() {
+            this.a = 1;
+        })
+
+        var C2 = mixin(function() {
+            this.b = 2;
+        })
+
+        var C3 = mixin(C1, C2)
+
+        
+        var o = new C3();
+        assert.equal(o.a, 1);
+        assert.equal(o.b, 2);
     })
 
 });
