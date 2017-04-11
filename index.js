@@ -81,26 +81,18 @@ var getMixinConfig = function(args) {
     }
 };
 
-var CONSTRUCTOR_CONTENT = (function() {
-    var args = arguments;
-    return getCtors(this.constructor).reduce(function(instance, init) {
-        return init.apply(instance, args) || instance;
-    }, this);
-}).toString().replace(/function\s*\(\)/, '');
-
 var generateConstructor = function(ctors) {
-    var constructorNames = ctors.reduce(function(names, fn) {
-        if (fn.name) {
-            names.push(fn.name)
-        }
-        return names;
-    }, []).join('__');
+    var Mixin = function() {
+        var args = arguments;
+        return getCtors(Mixin).reduce(function(instance, init) {
+            return init.apply(instance, args) || instance;
+        }, this);
+    };
 
-    var Class;    
-    eval('Class = function ' + constructorNames + '()' + CONSTRUCTOR_CONTENT);
-    setCtors(Class, ctors);
-    return Class;
-};
+    setCtors(Mixin, ctors);
+
+    return Mixin;
+}
 
 module.exports = function() {
     var config = getMixinConfig(flatten(slice.call(arguments)));
